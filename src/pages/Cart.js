@@ -5,9 +5,9 @@ import Announcement from "../components/Announcement";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import { Add, Remove } from "@mui/icons-material";
-import { mobile, tablet } from "../responsive";
-import { useDispatch, useSelector} from "react-redux";
-import axios from "axios"
+import { mobile } from "../responsive";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Container = styled.div`
   overflow-x: hidden;
@@ -119,7 +119,7 @@ const ColorSpan = styled.div`
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   margin-left: 10px;
 `;
 
@@ -183,24 +183,24 @@ const FinalButton = styled.button`
 `;
 
 const Cart = () => {
+  const cart = useSelector((state) => state.cart);
 
-  const cart = useSelector(state => state.cart)
-
-
-  const checkoutHandler =  async() => {
+  const checkoutHandler = async () => {
     try {
-      const res = await axios.post(`http://localhost:5000/api/payments/create-checkout-session`, {
-        items: [
-          {id: 1,  quantity: 3},
-          {id: 2, quantity: 2},
-        ]
-      });
-      console.log(res.data.url)
-      
+      const res = await axios.post(
+        `http://localhost:5000/api/payments/create-checkout-session`,
+        {
+          items: [
+            { id: 1, quantity: 3 },
+            { id: 2, quantity: 2 },
+          ],
+        }
+      );
+      console.log(res.data.url);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <Container>
@@ -218,39 +218,44 @@ const Cart = () => {
         </Top>
         <Bottom>
           <BLeft>
-            {cart.products.length !== 0 ? 
-            cart.products.map((product, index) => 
-              <MainProduct >
-            <ProductDetails>
-              <Image src={product.img} />
-              <ProductDetail>
-                <ProductName>
-                  <b>Product</b>: {product.title}
-                </ProductName>
-                <ProductID>
-                  <b>ID</b>: {product._id}
-                </ProductID>
-                <ProductColor>
-                  <b>Color</b>: <ColorSpan color={product.color}></ColorSpan>
-                </ProductColor>
-                <ProductSize>
-                  <b>Size</b>: {product.size}
-                </ProductSize>
-              </ProductDetail>
-            </ProductDetails>
-            <ProductPrice>
-              <ProductPriceOuter>
-                <ProductPriceInner>
-                  <Add />
-                  <ProductAmount>{product.quantity}</ProductAmount>
-                  <Remove />
-                </ProductPriceInner>
-                <RealPrice>$ {product.price * product.quantity}</RealPrice>
-              </ProductPriceOuter>
-            </ProductPrice>
-          </MainProduct>)
-             : <MainProduct>No Item</MainProduct>
-          }
+            {cart.products.length !== 0 ? (
+              cart.products.map((product, index) => (
+                <MainProduct>
+                  <ProductDetails>
+                    <Image src={product.img} />
+                    <ProductDetail>
+                      <ProductName>
+                        <b>Product</b>: {product.title}
+                      </ProductName>
+                      <ProductID>
+                        <b>ID</b>: {product._id}
+                      </ProductID>
+                      <ProductColor>
+                        <b>Color</b>:{" "}
+                        <ColorSpan color={product.color}></ColorSpan>
+                      </ProductColor>
+                      <ProductSize>
+                        <b>Size</b>: {product.size}
+                      </ProductSize>
+                    </ProductDetail>
+                  </ProductDetails>
+                  <ProductPrice>
+                    <ProductPriceOuter>
+                      <ProductPriceInner>
+                        <Add />
+                        <ProductAmount>{product.quantity}</ProductAmount>
+                        <Remove />
+                      </ProductPriceInner>
+                      <RealPrice>
+                        $ {product.price * product.quantity}
+                      </RealPrice>
+                    </ProductPriceOuter>
+                  </ProductPrice>
+                </MainProduct>
+              ))
+            ) : (
+              <MainProduct>No Item</MainProduct>
+            )}
           </BLeft>
           <BRight>
             <Summary>Order Summary</Summary>

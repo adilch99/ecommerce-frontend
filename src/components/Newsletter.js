@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { NoEncryption, Send } from "@mui/icons-material";
-import { maxWidth } from "@mui/system";
+import { Send } from "@mui/icons-material";
 import { tablet, mobile } from "../responsive";
 
 const Container = styled.div`

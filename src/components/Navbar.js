@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Search, ShoppingCartOutlined } from "@mui/icons-material";
 import { Badge } from "@mui/material";
-import { tablet, mobile } from "../responsive";
+import { mobile } from "../responsive";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -82,8 +82,8 @@ const AuthMenu = styled.span`
 // navbar
 
 const Navbar = () => {
-  const quantity = useSelector(state => state.cart.quantity);
-  return ( 
+  const quantity = useSelector((state) => state.cart.quantity);
+  return (
     <>
       <Container>
         <Wrapper>
@@ -101,9 +101,9 @@ const Navbar = () => {
             <AuthMenu>Register</AuthMenu>
             <AuthMenu>Sign In</AuthMenu>
             <Link to="/cart">
-            <Badge badgeContent={quantity} color="primary">
-              <ShoppingCartOutlined />
-            </Badge>
+              <Badge badgeContent={quantity} color="primary">
+                <ShoppingCartOutlined />
+              </Badge>
             </Link>
           </Right>
         </Wrapper>

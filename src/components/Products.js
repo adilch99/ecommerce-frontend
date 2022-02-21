@@ -1,7 +1,5 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { popularProducts } from "../data";
 import { publicRequest } from "../requestMethods";
 import Product from "./Product";
 
@@ -20,9 +18,7 @@ const Products = ({ cat, filters, sort }) => {
   useEffect(() => {
     const getProducts = async () => {
       const res = await publicRequest.get(
-        cat
-          ? `/products/?category=${cat}`
-          : "/products"
+        cat ? `/products/?category=${cat}` : "/products"
       );
       setProducts(res.data);
     };

@@ -4,13 +4,12 @@ import Announcement from "../components/Announcement";
 import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
 import styled from "styled-components";
-import { Add, ConstructionOutlined, Remove, Try } from "@mui/icons-material";
+import { Add, Remove } from "@mui/icons-material";
 import { useLocation } from "react-router-dom";
-import LoadingAnimation from "../components/animations/loading/LoadingAnimation"
+import LoadingAnimation from "../components/animations/loading/LoadingAnimation";
 import { publicRequest } from "../requestMethods";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch } from "react-redux";
 import { addProduct } from "../redux/cartRedux";
-
 
 const Wrapper = styled.div`
   display: flex;
@@ -137,10 +136,10 @@ const Button = styled.button`
 `;
 
 const LoadingContainer = styled.div`
-height: 90vh;
-display: flex;
-align-items: center;
-justify-content: center;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Product = () => {
@@ -151,78 +150,90 @@ const Product = () => {
   const [quantity, setQuantity] = useState(1);
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProduct = async () => {
       try {
-        const res = await publicRequest.get(`/products/${id}`)
-      setProduct(res.data);
+        const res = await publicRequest.get(`/products/${id}`);
+        setProduct(res.data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      
     };
     getProduct();
   }, [id]);
 
   const handleQuantity = (type) => {
     if (type === "decr") {
-      quantity > 1 && setQuantity(quantity - 1)
-      
+      quantity > 1 && setQuantity(quantity - 1);
     } else {
-      setQuantity(quantity + 1)
+      setQuantity(quantity + 1);
     }
-  }
+  };
 
   const handleClick = () => {
-     dispatch(addProduct({...product, quantity, color, size}))
-  }
-  
+    dispatch(addProduct({ ...product, quantity, color, size }));
+  };
+
   return (
     <div>
       <Navbar />
       <Announcement />
-      {product ? <Wrapper>
-        <ImgContainer>
-          <Image src={product.img} />
-        </ImgContainer>
-        <ImgInfo>
-          <Title>{product.title}</Title>
-          <Desc>{product.desc}</Desc>
-          <Price>$ {product.price}</Price>
-          <FilterContainer>
-            <FitlerTop>
-              <FitlerTopA>
-                <FText>Color</FText>
-                {product.color.map((color) => (
-                  <FColor color={color.toLowerCase()} onClick={() => setColor(color)}></FColor>
-                ))}
-              </FitlerTopA>
-              <FitlerTopB>
-                <FText>Size</FText>
-                <Select onClick={(e) => setSize(e.target.value)}>
-                  <Option selected disabled>
-                    size
-                  </Option>
-                  {product.size.map((size) => (
-                    <Option>{size}</Option>
+      {product ? (
+        <Wrapper>
+          <ImgContainer>
+            <Image src={product.img} />
+          </ImgContainer>
+          <ImgInfo>
+            <Title>{product.title}</Title>
+            <Desc>{product.desc}</Desc>
+            <Price>$ {product.price}</Price>
+            <FilterContainer>
+              <FitlerTop>
+                <FitlerTopA>
+                  <FText>Color</FText>
+                  {product.color.map((color) => (
+                    <FColor
+                      color={color.toLowerCase()}
+                      onClick={() => setColor(color)}
+                    ></FColor>
                   ))}
-                </Select>
-              </FitlerTopB>
-            </FitlerTop>
-            <FilterBottom>
-              <ProductNumContainer>
-                <Remove onClick={() => handleQuantity("decr")} style={{cursor: "pointer"}}/>
-                <ProductNum>{quantity}</ProductNum>
-                <Add onClick={() => handleQuantity("incr")} style={{cursor: "pointer"}}/>
-              </ProductNumContainer>
-              <Button onClick={handleClick}>ADD TO CART</Button>
-            </FilterBottom>
-          </FilterContainer>
-        </ImgInfo>
-      </Wrapper> : <LoadingContainer><LoadingAnimation/></LoadingContainer>}
+                </FitlerTopA>
+                <FitlerTopB>
+                  <FText>Size</FText>
+                  <Select onClick={(e) => setSize(e.target.value)}>
+                    <Option selected disabled>
+                      size
+                    </Option>
+                    {product.size.map((size) => (
+                      <Option>{size}</Option>
+                    ))}
+                  </Select>
+                </FitlerTopB>
+              </FitlerTop>
+              <FilterBottom>
+                <ProductNumContainer>
+                  <Remove
+                    onClick={() => handleQuantity("decr")}
+                    style={{ cursor: "pointer" }}
+                  />
+                  <ProductNum>{quantity}</ProductNum>
+                  <Add
+                    onClick={() => handleQuantity("incr")}
+                    style={{ cursor: "pointer" }}
+                  />
+                </ProductNumContainer>
+                <Button onClick={handleClick}>ADD TO CART</Button>
+              </FilterBottom>
+            </FilterContainer>
+          </ImgInfo>
+        </Wrapper>
+      ) : (
+        <LoadingContainer>
+          <LoadingAnimation />
+        </LoadingContainer>
+      )}
       <Newsletter />
       <Footer />
     </div>
